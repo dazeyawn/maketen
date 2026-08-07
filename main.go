@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/dazeyawn/maketen/handler"
 )
@@ -10,8 +11,11 @@ import (
 func main() {
 	http.HandleFunc("/solve", handler.SolveHandler)
 
-	const port = "8080"
-	fmt.Printf("Server running on: http://localhost:%s\n", port)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	log.Printf("Server listening on port %s\n", port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		panic(err)
