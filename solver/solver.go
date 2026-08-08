@@ -3,6 +3,7 @@ package solver
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/shopspring/decimal"
 )
@@ -45,7 +46,11 @@ func Solve(numbers []int, target int) (bool, string, error) {
 	dfs = func(depth int) (bool, string) {
 		if depth == nLen*2-1 {
 			if stack[0].Equal(t) {
-				return true, fStack[0]
+				expr := fStack[0]
+				if strings.HasPrefix(expr, "(") && strings.HasSuffix(expr, ")") {
+					expr = expr[1 : len(expr)-1]
+				}
+				return true, expr
 			}
 			return false, ""
 		}
